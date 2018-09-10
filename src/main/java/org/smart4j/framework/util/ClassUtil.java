@@ -7,11 +7,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public final class ClassUtil {
 
@@ -25,12 +28,17 @@ public final class ClassUtil {
         return  Thread.currentThread().getContextClassLoader();
     }
 
-    /**
-     * 加载类
-     * @param className
-     * @param isInitialized
-     * @return
-     */
+
+    public static Class<?> loadClass(String className) {
+       return  loadClass(className,true);
+    }
+
+        /**
+         * 加载类
+         * @param className
+         * @param isInitialized
+         * @return
+         */
     public static Class<?> loadClass(String className,boolean isInitialized){
         Class<?> cls;
         try{
@@ -54,6 +62,23 @@ public final class ClassUtil {
                     if("file".equals(protocol)){
                         String packagePath = url.getPath().replaceAll("%20","");
                         addClass(clasSet,packagePath,packageName);
+                    }else if("jar".equals(protocol)){
+                        JarURLConnection jarURLConnection = (JarURLConnection) url.openConnection();
+                        url.openConnection();
+                        if(jarURLConnection !=null){
+                            JarFile jarFile = jarURLConnection.getJarFile();
+                            if(jarFile !=null){
+                                Enumeration<JarEntry> jarEntries = jarFile.entries();
+                                while (jarEntries.hasMoreElements()){
+                                    JarEntry jarEntry = jarEntries.nextElement();
+                                    String jarEntryName = jarEntry.getName();
+                                    if(jarEntryName.endsWith(".class")){
+                                        String className = jarEntryName.substring(0,jarEntryName.lastIndexOf(".")).replaceAll("/",".");
+                                        doAddClass(clasSet,className);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -61,6 +86,7 @@ public final class ClassUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return clasSet;
     }
 
     private static void addClass(Set<Class<?>> classSet,String packagePath,String packageName){
