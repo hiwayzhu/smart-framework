@@ -4,16 +4,16 @@ import java.lang.reflect.Method;
 
 public class Handler {
 
-    private Method axtionMethod;
+    private Method actionMethod;
     private Class<?> controllerClass;
 
     public Handler(Class<?> controllerClass,Method actionMethod){
         this.controllerClass = controllerClass;
-        this.axtionMethod = actionMethod;
+        this.actionMethod = actionMethod;
     }
 
-    public Method getAxtionMethod() {
-        return axtionMethod;
+    public Method getActionMethod() {
+        return actionMethod;
     }
 
     public Class<?> getControllerClass() {
