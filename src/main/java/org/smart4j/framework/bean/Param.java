@@ -4,6 +4,9 @@ import org.smart4j.framework.util.CastUtil;
 
 import java.util.Map;
 
+/**
+ * 请求参数对象
+ */
 public class Param {
 
     private Map<String,Object> paramMap;
