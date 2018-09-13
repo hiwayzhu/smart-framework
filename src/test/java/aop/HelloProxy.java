@@ -1,3 +1,5 @@
+package aop;
+
 public class HelloProxy implements Hello {
     private Hello hello;
 

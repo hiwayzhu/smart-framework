@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 代理链
+ */
 public class ProxyChain {
 
     //目标类

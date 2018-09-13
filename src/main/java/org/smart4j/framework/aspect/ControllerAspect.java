@@ -8,6 +8,9 @@ import org.smart4j.framework.proxy.AspectProxy;
 
 import java.lang.reflect.Method;
 
+/**
+ * 拦截Controller所有方法
+ */
 @Aspect(Controller.class)
 public class ControllerAspect extends AspectProxy {
 
